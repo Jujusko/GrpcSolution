@@ -3,7 +3,6 @@ using System.Net;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
-using Serilog.OpenTelemetry;
 using Server.DAL;
 using Server.Extensions.SerilogEnricher;
 using Server.Interceptor;
@@ -18,10 +17,10 @@ public static class Startup
         // Конфигурация логгера
         builder.Host.UseSerilog((context, lc) => lc
             .Enrich.WithCaller()
-            .Enrich.WithResource(
-                ("server", Environment.MachineName),
-                ("app", AppDomain.CurrentDomain.FriendlyName)
-            )
+            // .Enrich.WithResource(
+            //     ("server", Environment.MachineName),
+            //     ("app", AppDomain.CurrentDomain.FriendlyName)
+            // )
             .WriteTo.Console()
             .ReadFrom.Configuration(context.Configuration)
         );
@@ -95,19 +94,21 @@ public static class Startup
         using var serviceScope = app.Services.GetService<IServiceScopeFactory>()?.CreateScope();
         if (serviceScope != null)
         {
-            var db = serviceScope.ServiceProvider.GetRequiredService<TestTaskDbContext>();
-            db.Database.Migrate();
+            var database = serviceScope.ServiceProvider.GetRequiredService<TestTaskDbContext>();
+            database.Database.Migrate();
 
+            // var db = new DbTest(database);
             // Parallel.ForEach(new List<int>{1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9}, new ParallelOptions
             // {
             //     MaxDegreeOfParallelism = 3
             // },  (_, ct) =>
             // {
             //
-            //     var product = db.GetProduct()?.Result;
+            //     var product = db.Products.FirstOrDefault(x => x.Id == 1);
+            //     // var product = db.GetProduct()?.Result;
             //     if (product is not null)
             //     {
-            //         Log.Information("Product [{Product}]",product.Name);
+            //         Log.Information("Product [{Product}]" + Thread.CurrentThread.ManagedThreadId,product.Name);
             //     }
             //     
             // });

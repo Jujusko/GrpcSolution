@@ -8,7 +8,6 @@
 
 	<ItemGroup>
 		<Protobuf Remove="../Protos/grpc_solution/test/v1/test.proto" />
-		<Protobuf Include="../Protos/grpc_solution/test/v1/test.proto" GrpcServices="Client" Link="Protos/grpc_solution/test/v1/test.proto" ProtoRoot=".." />
 
 		<Protobuf Remove="../Protos/grpc_solution/product/v1/product.proto" />
 

@@ -50,7 +50,7 @@ namespace Client.Controllers
             {
                 using var channel = GrpcChannel.ForAddress("http://localhost:5292");
                 var client = new ProductService.ProductServiceClient(channel);
-                var res = await client.GetAllProductsServiceAsync(new GetAllProductsRequest
+                var res = await client.GetAllProductsAsync(new GetAllProductsRequest
                 {
                     From = from,
                     Amount = amount
@@ -77,7 +77,7 @@ namespace Client.Controllers
             {
                 using var channel = GrpcChannel.ForAddress("http://localhost:5292");
                 var client = new ProductService.ProductServiceClient(channel);
-                var res = client.GetProductByIdService(new GetProductByIdServiceRequest
+                var res = client.GetProductById(new GetProductByIdRequest
                 {
                     Id = id
                 });
@@ -102,7 +102,7 @@ namespace Client.Controllers
             {
                 using var channel = GrpcChannel.ForAddress("http://localhost:5292");
                 var client = new ProductService.ProductServiceClient(channel);
-                var res =  client.AddProductService(new AddProductServiceRequest()
+                var res =  client.AddProduct(new AddProductRequest()
                 {
                     Name = product.Name,
                     Cost = product.Cost.FromDecimal()

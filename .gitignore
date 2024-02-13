@@ -236,3 +236,17 @@ ultron-*.tgz
 **.user
 **.pubxml
 appsettings.**.json
+/Database/db/base
+/Database/db/global
+/Database/db/pg_hba.conf
+/Database/db/pg_ident.conf
+/Database/db/pg_logical
+/Database/db/pg_multixact
+/Database/db/pg_subtrans
+/Database/db/PG_VERSION
+/Database/db/pg_wal
+/Database/db/pg_xact
+/Database/db/postgresql.auto.conf
+/Database/db/postgresql.conf
+/Database/db/postmaster.opts
+/Database/db/postmaster.pid
