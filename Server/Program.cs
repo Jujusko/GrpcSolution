@@ -1,24 +1,7 @@
-using Microsoft.EntityFrameworkCore;
-using Server.DAL;
-using Server.Mapper;
-using Server.Services;
+using Server;
 
-var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddGrpc();
-builder.Services.AddAutoMapper(typeof(TestTaskMapper));
-builder.Services.AddDbContext<TestTaskDbContext>(opt =>
-{
-    opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"), o =>
-    {
-
-    });
-
-});
-
-var app = builder.Build();
-
-app.MapGrpcService<GrpcTestService>();
-app.MapGrpcService<GrpcProductService>();
-
-app.Run();
+Startup.ConfigApp(
+    Startup.ConfigureHost(
+        WebApplication.CreateBuilder(new WebApplicationOptions { Args = args })
+    ).Build()
+).Run();

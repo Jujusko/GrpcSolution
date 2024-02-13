@@ -3,28 +3,27 @@ syntax = "proto3";
 import "google/protobuf/wrappers.proto";
 option csharp_namespace = "GrpcSolution.Product.V1";
 
-
 package grpc_solution.product.v1;
 
 service ProductService {
-  rpc GetProductByIdService(GetProductByIdServiceRequest) returns (GetProductByIdServiceResponse);
-  rpc AddProductService(AddProductServiceRequest) returns (AddProductServiceResponse);
-	rpc GetAllProductsService(GetAllProductsRequest) returns (GetAllProductsResponse);
+	rpc GetProductById(GetProductByIdRequest) returns (GetProductByIdResponse);
+	rpc AddProduct(AddProductRequest) returns (AddProductResponse);
+	rpc GetAllProducts(GetAllProductsRequest) returns (GetAllProductsResponse);
 }
-message GetProductByIdServiceRequest {
-	int64 id = 1;
-}
-
-message GetProductByIdServiceResponse { 
-  string product_name = 1;
-  Decimal cost = 2;
+message GetProductByIdRequest {
+	google.protobuf.Int64Value id = 1;
 }
 
-message AddProductServiceRequest{
+message GetProductByIdResponse {
+	string product_name = 1;
+	Decimal cost = 2;
+}
+
+message AddProductRequest{
 	string name = 1;
-	Decimal cost = 2; 
+	Decimal cost = 2;
 }
-message AddProductServiceResponse{
+message AddProductResponse{
 	int64 id = 3;
 }
 
@@ -35,12 +34,12 @@ message GetAllProductsRequest{
 
 message GetAllProductsResponse{
 	repeated ProductInfo products = 1;
-}
 
-message ProductInfo{
-	string product_name = 1;
-	Decimal cost = 2;
-	int64 id = 3;
+	message ProductInfo{
+		string product_name = 1;
+		Decimal cost = 2;
+		int64 id = 3;
+	}
 }
 
 message Decimal
