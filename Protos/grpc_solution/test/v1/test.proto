@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcSolution.Test.V1";
+
+package grpc_solution.test.v1;
+
+service TestService {
+  rpc GetRandomNumber(GetRandomNumberRequest) returns (GetRandomNumberResponse);
+}
+
+message GetRandomNumberRequest {
+}
+
+message GetRandomNumberResponse {
+  int32 number = 1;
+}
+
