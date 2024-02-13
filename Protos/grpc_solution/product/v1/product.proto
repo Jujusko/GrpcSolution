@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+option csharp_namespace = "GrpcSolution.Product.V1";
+
+
+package grpc_solution.product.v1;
+
+service ProductService {
+  rpc GetProductByIdService(GetProductByIdServiceRequest) returns (GetProductByIdServiceResponse);
+  rpc AddProductService(AddProductServiceRequest) returns (AddProductServiceResponse);
+	rpc GetAllProductsService(GetAllProductsRequest) returns (GetAllProductsResponse);
+}
+message GetProductByIdServiceRequest {
+	int64 id = 1;
+}
+
+message GetProductByIdServiceResponse { 
+  string product_name = 1;
+  Decimal cost = 2;
+}
+
+message AddProductServiceRequest{
+	string name = 1;
+	Decimal cost = 2; 
+}
+message AddProductServiceResponse{
+	int64 id = 3;
+}
+
+message GetAllProductsRequest{
+	int32 from = 1;
+	int32 amount = 2;
+}
+
+message GetAllProductsResponse{
+	repeated ProductInfo products = 1;
+}
+
+message ProductInfo{
+	string product_name = 1;
+	Decimal cost = 2;
+	int64 id = 3;
+}
+
+message Decimal
+{
+	int64 left_value = 1;
+	int32 right_value = 2;
+}
