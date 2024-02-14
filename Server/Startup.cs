@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Server.DAL;
+using Server.DAL.Repositories;
 using Server.Extensions.SerilogEnricher;
 using Server.Interceptor;
 using Server.Services;
@@ -15,25 +16,26 @@ public static class Startup
     internal static WebApplicationBuilder ConfigureHost(WebApplicationBuilder builder)
     {
         // Конфигурация логгера
-        builder.Host.UseSerilog((context, lc) => lc
-            .Enrich.WithCaller()
-            // .Enrich.WithResource(
+        builder.Host.UseSerilog((context, lc) =>
+        {
+            lc
+                .Enrich.WithCaller()
+                .MinimumLevel.Information()
+                .WriteTo.Console()
+                .ReadFrom.Configuration(context.Configuration);
+            // lc.WriteTo.File("../log_test_task.txt", rollingInterval: RollingInterval.Day);
+            // check error// lc.Enrich.WithResource(
             //     ("server", Environment.MachineName),
             //     ("app", AppDomain.CurrentDomain.FriendlyName)
-            // )
-            .WriteTo.Console()
-            .ReadFrom.Configuration(context.Configuration)
-        );
+            // );
+        });
 
         // Конфигурация Kestrel
         builder.WebHost.ConfigureKestrel((_, opt) =>
             {
                 var appHost = builder.Configuration.GetValue<string>("App:Host");
                 var appPort = builder.Configuration.GetValue<int>("App:Ports:Http2");
-
-
                 opt.Limits.MinRequestBodyDataRate = null;
-
                 opt.Listen(IPAddress.Parse(appHost ?? "0.0.0.0"), appPort, listenOptions =>
                 {
                     Log.Information(
@@ -43,12 +45,12 @@ public static class Startup
 
                     listenOptions.Protocols = HttpProtocols.Http2;
                 });
-
                 opt.AllowAlternateSchemes = true;
             }
         );
 
-
+        builder.Services.AddTransient<IProductRepository, ProductRepository>();
+        
         // https://learn.microsoft.com/ru-ru/aspnet/core/grpc/configuration?view=aspnetcore-8.0
         builder.Services.AddGrpc(options =>
         {
@@ -74,18 +76,13 @@ public static class Startup
         var connectionString =
             $"Host={pgsqlHost};Port={pgsqlPort};Database={pgsqlDb};Username={pgsqlUser};Password={pgsqlPassword};";
 
-
         builder.Services.AddDbContext<TestTaskDbContext>(opt =>
         {
             opt.UseNpgsql(connectionString,
                 options => { options.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery); });
-
             if (builder.Environment.IsDevelopment())
                 opt.EnableSensitiveDataLogging();
         });
-
-        builder.Services.AddTransient<DbTest>();
-
         return builder;
     }
 
@@ -96,26 +93,8 @@ public static class Startup
         {
             var database = serviceScope.ServiceProvider.GetRequiredService<TestTaskDbContext>();
             database.Database.Migrate();
-
-            // var db = new DbTest(database);
-            // Parallel.ForEach(new List<int>{1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9}, new ParallelOptions
-            // {
-            //     MaxDegreeOfParallelism = 3
-            // },  (_, ct) =>
-            // {
-            //
-            //     var product = db.Products.FirstOrDefault(x => x.Id == 1);
-            //     // var product = db.GetProduct()?.Result;
-            //     if (product is not null)
-            //     {
-            //         Log.Information("Product [{Product}]" + Thread.CurrentThread.ManagedThreadId,product.Name);
-            //     }
-            //     
-            // });
         }
-
         app.MapGrpcService<GrpcProductService>();
-
         return app;
     }
 }

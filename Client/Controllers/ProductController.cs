@@ -102,7 +102,7 @@ namespace Client.Controllers
             {
                 using var channel = GrpcChannel.ForAddress("http://localhost:5292");
                 var client = new ProductService.ProductServiceClient(channel);
-                var res =  client.AddProduct(new AddProductRequest()
+                var res =  await client.AddProductAsync(new AddProductRequest()
                 {
                     Name = product.Name,
                     Cost = product.Cost.FromDecimal()

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using GrpcSolution.Product.V1;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Server.DAL.Entities;
 using Server.Extensions;
 
@@ -13,24 +14,23 @@ public class ProductProfile : Profile
             .ForMember(dst => dst.ProductName, opt =>
                 opt.MapFrom(src => src.Name))
             .ForMember(dst => dst.Cost, opt =>
-                opt.MapFrom(src => src.Cost.ToDecimal()))
-            ;
-
-        //ForMember and ForPath diff check
-        //add for each prop
-        // CreateMap<Product, GetProductByIdServiceResponse>()
-        //     .ForMember(dest => dest.Cost, 
-        //         opt => opt.MapFrom(src => src.Cost.FromDecimal()))
-        //     .ForMember(dest => dest.ProductName,
-        //     opt => opt.MapFrom(src => src.Name));
-        // CreateMap<AddProductServiceRequest, Product>().ForMember(dst => dst.Cost,
-        //     opt => opt.MapFrom(src => src.Cost.FromProtoDecimal()));
-        // CreateMap<Product, AddProductServiceResponse>();
-        //
-        // CreateMap<Product, ProductInfo>()
-        //     .ForMember(dst => dst.ProductName,
-        //         opt => opt.MapFrom(src => src.Name))
-        //     .ForMember(dst => dst.Cost,
-        //         opt => opt.MapFrom(src => src.Cost.FromDecimal()));
+                opt.MapFrom(src => src.Cost.ToDecimal()));
+        CreateMap<Product, GetAllProductsResponse.Types.ProductInfo>()
+            .ForMember(dst => dst.Cost, 
+                opt => opt.MapFrom(src => src.Cost.ToDecimal()))
+            .ForMember(dst => dst.ProductName, 
+                opt => opt.MapFrom(src => src.Name));
+        CreateMap<AddProductRequest, Product>()
+            .ForMember(dst => dst.Name,
+                opt => 
+                    opt.MapFrom(src => src.Name))
+            .ForMember(dst => dst.Id, 
+                opt => opt.Ignore())
+            .ForMember(dst => dst.Cost,
+            opt => opt.MapFrom(src => src.Cost.FromDecimal()));
+        CreateMap<Product, AddProductResponse>()
+            .ForMember(dst => dst.Id,
+            opt => 
+                opt.MapFrom(src => src.Id));
     }
 }

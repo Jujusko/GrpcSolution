@@ -250,3 +250,5 @@ appsettings.**.json
 /Database/db/postgresql.conf
 /Database/db/postmaster.opts
 /Database/db/postmaster.pid
+Protos/buf-Windows-x86_64.exe
+Protos/buf.lint.yaml
