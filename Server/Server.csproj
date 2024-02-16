@@ -9,6 +9,7 @@
     <ItemGroup>
         <PackageReference Include="AutoMapper" Version="13.0.0"/>
         <PackageReference Include="Grpc.AspNetCore" Version="2.60.0"/>
+        <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.61.0-pre1" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.15"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.15">
             <PrivateAssets>all</PrivateAssets>
@@ -34,7 +35,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Protobuf Remove="../Protos/grpc_solution/test/v1/test.proto"/>
 
         <Protobuf Remove="../Protos/grpc_solution/product/v1/product.proto"/>
         <Protobuf Include="../Protos/grpc_solution/product/v1/product.proto" GrpcServices="Server" Link="Protos/grpc_solution/product/v1/product.proto" ProtoRoot=".."/>

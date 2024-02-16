@@ -26,7 +26,7 @@ namespace Client.Mappers.MapHelper
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static decimal FromProtoDecimal(this Decimal value)
+        public static decimal? FromProtoDecimal(this Decimal value)
         {
             var convertedValue = value.LeftValue + value.RightValue * (decimal)Math.Pow(10, -9);
 

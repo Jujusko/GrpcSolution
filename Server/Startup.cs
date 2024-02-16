@@ -54,8 +54,7 @@ public static class Startup
         // https://learn.microsoft.com/ru-ru/aspnet/core/grpc/configuration?view=aspnetcore-8.0
         builder.Services.AddGrpc(options =>
         {
-            // Промежуточное ПО для работы с Azure (аутентификация)
-            options.Interceptors.Add<ClientRequestInterceptor>();
+            options.Interceptors.Add<ServerInterceptor>();
 
             options.IgnoreUnknownServices = false;
             options.MaxReceiveMessageSize = null;
@@ -64,6 +63,7 @@ public static class Startup
             options.ResponseCompressionAlgorithm = "gzip";
             options.EnableDetailedErrors = false;
         });
+        builder.Services.AddGrpcReflection();
 
         // Получение данных для подключения к БД из конфига appsettings.json
         var pgsqlHost = builder.Configuration.GetValue<string>("Postgres:Host");
@@ -94,7 +94,13 @@ public static class Startup
             var database = serviceScope.ServiceProvider.GetRequiredService<TestTaskDbContext>();
             database.Database.Migrate();
         }
+
         app.MapGrpcService<GrpcProductService>();
+
+        if (app.Environment.IsDevelopment())
+        {
+            app.MapGrpcReflectionService();
+        }
         return app;
     }
 }

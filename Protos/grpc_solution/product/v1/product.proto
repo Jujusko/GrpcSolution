@@ -3,6 +3,7 @@ syntax = "proto3";
 import "google/protobuf/wrappers.proto";
 option csharp_namespace = "GrpcSolution.Product.V1";
 
+
 package grpc_solution.product.v1;
 
 service ProductService {
@@ -15,16 +16,16 @@ message GetProductByIdRequest {
 }
 
 message GetProductByIdResponse {
-	string product_name = 1;
-	Decimal cost = 2;
+	optional google.protobuf.StringValue product_name = 1;
+	optional Decimal cost = 2;
 }
 
 message AddProductRequest{
 	string name = 1;
-	Decimal cost = 2;
+	optional Decimal cost = 2;
 }
 message AddProductResponse{
-	int64 id = 3;
+	google.protobuf.Int64Value id = 1;
 }
 
 message GetAllProductsRequest{
@@ -37,13 +38,13 @@ message GetAllProductsResponse{
 
 	message ProductInfo{
 		string product_name = 1;
-		Decimal cost = 2;
+		optional Decimal cost = 2;
 		int64 id = 3;
 	}
 }
 
 message Decimal
 {
-	int64 left_value = 1;
-	int32 right_value = 2;
+	google.protobuf.Int64Value left_value = 1;
+	google.protobuf.Int64Value right_value = 2;
 }
