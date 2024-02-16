@@ -1,6 +1,6 @@
 ﻿
 using Decimal = GrpcSolution.Product.V1.Decimal;
-namespace Client.Mappers.MapHelper
+namespace Client.Extensions
 {
     public static class CostConverter
     {

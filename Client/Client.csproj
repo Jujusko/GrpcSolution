@@ -31,4 +31,8 @@
 		<Protobuf Include="../Protos/grpc_solution/product/v1/product.proto" GrpcServices="Client" Link="Protos/grpc_solution/product/v1/product.proto" ProtoRoot=".." />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Mappers\MapHelper\" />
+	</ItemGroup>
+
 </Project>

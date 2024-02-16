@@ -21,9 +21,11 @@ public class ServerInterceptor : Grpc.Core.Interceptors.Interceptor
         {
             return await continuation(request, context);
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            _logger.LogError("Error thrown by {context.Method}.", context.Method);
+            _logger.LogError(
+                "Ошибка | Exception {Exception} [{ExceptionType}] | InnerException {InnerException}",
+                e.Message, typeof(Exception), e.InnerException?.Message);
             throw;
         }
     }

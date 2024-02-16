@@ -1,4 +1,5 @@
 using Client.Configurations;
+using Client.Services;
 using Microsoft.OpenApi.Models;
 
 namespace Client;
@@ -11,9 +12,10 @@ public static class Startup
 
         builder.Services.Configure<GrpcConfiguration>(builder.Configuration.GetSection("GrpcConfiguration"));
 
-// Add services to the container.
+        builder.Services.AddTransient<IGrpcService, GrpcService>();
+        builder.Services.AddTransient<IProductServiceBl, ProductServiceBl>();
+        
         builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(c =>
         {

@@ -23,7 +23,7 @@ public class GrpcService : IGrpcService
         {
                 
             c.AllowNullCollections = true;
-            c.AddProfile(typeof(ClientMapper));
+            c.AddProfile(typeof(ProductProfile));
         });
         _mapper = new Mapper(cfg);
 
@@ -70,31 +70,37 @@ public class GrpcService : IGrpcService
         }
     }
 
-    public async Task<long?> AddProduct(AddProductRequest product)
+    /// <summary>
+    /// Удалённый вызов метода на добавление нового продукта с передачей модели AddProductRequest
+    /// </summary>
+    /// <param name="product">Заполненная модель продукта для добавления</param>
+    /// <returns>Ответ от сервера - AddProductResponse, содержит Id новой сущности</returns>
+    public async Task<AddProductResponse> AddProduct(AddProductRequest product)
     {
-        using var channel = GrpcChannel.ForAddress($"http://{_grpcConfiguration.Url}:{_grpcConfiguration.Port}");
-        var client = new ProductService.ProductServiceClient(channel);
+        var client = new ProductService.ProductServiceClient(_channel);
 
-        long? result = null;
+        AddProductResponse result = new();
         
         try
         {
-            var responseFromServer = await client.AddProductAsync(product);
-            result = responseFromServer.Id;
+            result = await client.AddProductAsync(product);
         }
         catch (RpcException e)
         {
-            
             _logger.LogError(
                 "Ошибка во время выполнения запроса | Exception {Exception} [{ExceptionType}] | InnerException {InnerException}",
                 e.Message, typeof(Exception), e.InnerException?.Message);
             return result;
         }
-
         return result;
     }
 
 
+    /// <summary>
+    /// Удалённый вызов метода на получение существующего продукта с передачей модели GetProductByIdRequest
+    /// </summary>
+    /// <param name="productRequest">Модель из прото-контракта, содержащая в себе Id продукта</param>
+    /// <returns>Ответ от сервера - GetProductByIdResponse, содержит информацию о сущности</returns>
     public async Task<GetProductByIdResponse?> GetProductById(GetProductByIdRequest productRequest)
     {
         using var channel = GrpcChannel.ForAddress($"http://{_grpcConfiguration.Url}:{_grpcConfiguration.Port}");

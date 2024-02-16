@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
-using Client.Mappers.MapHelper;
+using Client.Extensions;
 using Client.Models;
 using GrpcSolution.Product.V1;
 
 namespace Client.Mappers
 {
-    public class ClientMapper : Profile
+    public class ProductProfile : Profile
     {
-        public ClientMapper()
+        public ProductProfile()
         {
             CreateMap<ProductModel, GetProductByIdResponse>()
                 .ForMember(dst => dst.Cost, 

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using Client.Extensions;
 using Client.Mappers;
-using Client.Mappers.MapHelper;
 using Client.Models;
 using Grpc.Core;
 using Grpc.Net.Client;
@@ -26,7 +26,7 @@ namespace Client.Controllers
             {
                 
                 c.AllowNullCollections = true;
-                c.AddProfile(typeof(ClientMapper));
+                c.AddProfile(typeof(ProductProfile));
             });
 
             _mapper = new Mapper(cfg);
