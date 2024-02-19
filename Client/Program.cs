@@ -1,4 +1,5 @@
 // YAGNI
+
 using Client;
 
 Startup.ConfigApp(

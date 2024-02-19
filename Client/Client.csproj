@@ -1,35 +1,35 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
 
-	<ItemGroup>
-		<!-- Logger section -->
-		<PackageReference Include="Serilog.AspNetCore" Version="7.0.0"/>
-		<PackageReference Include="Serilog.Extensions.Logging" Version="7.0.0"/>
-		<PackageReference Include="Serilog.Settings.Configuration" Version="8.0.0"/>
-		<PackageReference Include="Serilog.Sinks.Seq" Version="6.0.0"/>
+    <ItemGroup>
+        <!-- Logger section -->
+        <PackageReference Include="Serilog.AspNetCore" Version="7.0.0"/>
+        <PackageReference Include="Serilog.Extensions.Logging" Version="7.0.0"/>
+        <PackageReference Include="Serilog.Settings.Configuration" Version="8.0.0"/>
+        <PackageReference Include="Serilog.Sinks.Seq" Version="6.0.0"/>
 
-		<!-- gRPC section -->
-		<PackageReference Include="Grpc.AspNetCore" Version="2.60.0" />
-		<PackageReference Include="Grpc.Core" Version="2.46.6" />
-		<PackageReference Include="Grpc.Net.Client" Version="2.60.0" />
+        <!-- gRPC section -->
+        <PackageReference Include="Grpc.AspNetCore" Version="2.60.0"/>
+        <PackageReference Include="Grpc.Core" Version="2.46.6"/>
+        <PackageReference Include="Grpc.Net.Client" Version="2.60.0"/>
 
-		<!-- Additional section -->
-		<PackageReference Include="AutoMapper" Version="13.0.0"/>
-		
-		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" />
-		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
-		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-		<PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.5.0" />
-	</ItemGroup>
+        <!-- Additional section -->
+        <PackageReference Include="AutoMapper" Version="13.0.0"/>
 
-	<ItemGroup>
-		<Protobuf Remove="../Protos/grpc_solution/product/v1/product.proto"/>
-		<Protobuf Include="../Protos/grpc_solution/product/v1/product.proto" GrpcServices="Client" Link="Protos/grpc_solution/product/v1/product.proto" ProtoRoot=".."/>
-	</ItemGroup>
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0"/>
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0"/>
+        <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.5.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Protobuf Remove="../Protos/grpc_solution/product/v1/product.proto"/>
+        <Protobuf Include="../Protos/grpc_solution/product/v1/product.proto" GrpcServices="Client" Link="Protos/grpc_solution/product/v1/product.proto" ProtoRoot=".."/>
+    </ItemGroup>
 
 </Project>

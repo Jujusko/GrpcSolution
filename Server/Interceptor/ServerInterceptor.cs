@@ -1,5 +1,4 @@
 ﻿using Grpc.Core;
-using Grpc.Core.Interceptors;
 
 namespace Server.Interceptor;
 
@@ -12,7 +11,8 @@ public class ServerInterceptor : Grpc.Core.Interceptors.Interceptor
         _logger = logger;
     }
 
-    public override async Task<TResponse> UnaryServerHandler<TRequest, TResponse>(TRequest request, ServerCallContext context,
+    public override async Task<TResponse> UnaryServerHandler<TRequest, TResponse>(TRequest request,
+        ServerCallContext context,
         UnaryServerMethod<TRequest, TResponse> continuation)
     {
         _logger.LogInformation("Starting receiving call. Type/Method: {Type} / {Method}",

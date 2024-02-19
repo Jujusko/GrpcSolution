@@ -8,9 +8,7 @@ public class Product
     //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public long Id { get; set; }
 
-    [Required]
-    [MaxLength(128)]
-    public required string Name { get; init; }
+    [Required] [MaxLength(128)] public required string Name { get; init; }
 
     public decimal Cost { get; init; }
 }

@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
-using Google.Protobuf;
 using Grpc.Core;
 using GrpcSolution.Product.V1;
-using Microsoft.EntityFrameworkCore;
 using Server.DAL;
 using Server.DAL.Entities;
 using Server.DAL.Repositories;
@@ -15,15 +13,15 @@ internal class GrpcProductService : ProductService.ProductServiceBase
     private readonly ILogger<GrpcProductService> _logger;
     private readonly IMapper _mapper;
     private readonly IProductRepository _productRepository;
-    private IServiceProvider Services { get; }
-    public GrpcProductService(IHostEnvironment env, IServiceProvider services, 
+
+    public GrpcProductService(IHostEnvironment env, IServiceProvider services,
         ILogger<GrpcProductService> logger, IProductRepository productRepository)
     {
         Services = services;
         _logger = logger;
         _productRepository = productRepository;
-        
-        
+
+
         var config = new MapperConfiguration(cfg =>
         {
             cfg.AllowNullCollections = true;
@@ -40,10 +38,11 @@ internal class GrpcProductService : ProductService.ProductServiceBase
         _mapper = new Mapper(config);
     }
 
-    
+    private IServiceProvider Services { get; }
+
 
     /// <summary>
-    /// api-метод для получения продукта по Id
+    ///     api-метод для получения продукта по Id
     /// </summary>
     /// <returns>Возвращает продукт, если он пристуствует в базе данных</returns>
     public override async Task<GetProductByIdResponse> GetProductById(GetProductByIdRequest request,
@@ -55,6 +54,7 @@ internal class GrpcProductService : ProductService.ProductServiceBase
             _logger.LogError("Значение Id {RequestId} не присвоено", request.Id);
             return result;
         }
+
         var queryResult = await _productRepository.GetProductById(request.Id.Value, context.CancellationToken);
 
         if (queryResult == null)
@@ -79,9 +79,9 @@ internal class GrpcProductService : ProductService.ProductServiceBase
     }
 
     /// <summary>
-    /// api-метод для добавления продукта
-    /// Обязательное поле - наименование (Name) продукта
-    /// Необязательное поле - стоимость (cost) продукта
+    ///     api-метод для добавления продукта
+    ///     Обязательное поле - наименование (Name) продукта
+    ///     Необязательное поле - стоимость (cost) продукта
     /// </summary>
     /// <returns>Респонс-модель, описанную в прото-файле, содержащую Id добавленного продукта</returns>
     public override async Task<AddProductResponse> AddProduct(AddProductRequest request, ServerCallContext context)
@@ -95,7 +95,7 @@ internal class GrpcProductService : ProductService.ProductServiceBase
             _logger.LogError("Нет наименования товара, сущность не была добавлена.");
             return result;
         }
-        
+
         try
         {
             var product = _mapper.Map<Product>(request);
@@ -104,7 +104,6 @@ internal class GrpcProductService : ProductService.ProductServiceBase
                 var queryResult = await _productRepository.AddProduct(product, context.CancellationToken);
                 result.Id = queryResult;
             }
-                
         }
         catch (Exception e)
         {
@@ -112,22 +111,22 @@ internal class GrpcProductService : ProductService.ProductServiceBase
                 "Ошибка маппинга | Exception {Exception} [{ExceptionType}] | InnerException {InnerException}",
                 e.Message, typeof(Exception), e.InnerException?.Message);
         }
-        
+
         return result;
     }
 
     /// <summary>
-    /// Возвращает продукты по заданным параметрам
+    ///     Возвращает продукты по заданным параметрам
     /// </summary>
     /// <returns>Объект, созданный на основе прото-контракта, содержащий внутри себя только список объектов продукта</returns>
-    public override async Task<GetAllProductsResponse> GetAllProducts(GetAllProductsRequest request, ServerCallContext context)
+    public override async Task<GetAllProductsResponse> GetAllProducts(GetAllProductsRequest request,
+        ServerCallContext context)
     {
         var result = new GetAllProductsResponse();
         if (request.From < 0 || request.Amount < 0)
-        {
-            _logger.LogError("Данные From и Amount должны быть больше 0. From - {request.From}, Amount - {request.Amount}"
-                ,request.From, request.Amount);
-        }
+            _logger.LogError(
+                "Данные From и Amount должны быть больше 0. From - {request.From}, Amount - {request.Amount}"
+                , request.From, request.Amount);
         try
         {
             var databaseProducts =
@@ -147,7 +146,7 @@ internal class GrpcProductService : ProductService.ProductServiceBase
                 "Ошибка | Exception {Exception} [{ExceptionType}] | InnerException {InnerException}",
                 e.Message, typeof(Exception), e.InnerException?.Message);
         }
-        
+
         return result;
     }
 }

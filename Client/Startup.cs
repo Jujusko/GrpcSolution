@@ -3,7 +3,6 @@ using Client.Extensions.SerilogEnricher;
 using Client.ServiceInterfaces;
 using Client.Services;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.OpenApi.Models;
 using Serilog;
 
 namespace Client;
@@ -40,7 +39,7 @@ public static class Startup
                 opt.AllowAlternateSchemes = true;
             }
         );
-        
+
         builder.Services.AddTransient<IServer, GrpcServerService>();
 
         builder.Services.AddControllers();

@@ -6,12 +6,12 @@ namespace Client.Services;
 
 public class GrpcServerService : IServer
 {
-    private readonly ILogger<GrpcServerService> _logger;
     private readonly GrpcChannel _channel;
+    private readonly ILogger<GrpcServerService> _logger;
 
     private ProductService.ProductServiceClient? _instance;
-    
-    public GrpcServerService(IConfiguration configuration,ILogger<GrpcServerService> logger)
+
+    public GrpcServerService(IConfiguration configuration, ILogger<GrpcServerService> logger)
     {
         _logger = logger;
         var host = configuration.GetValue<string>("Services:Server:Host");
