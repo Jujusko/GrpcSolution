@@ -23,11 +23,6 @@ public static class Startup
                 .MinimumLevel.Information()
                 .WriteTo.Console()
                 .ReadFrom.Configuration(context.Configuration);
-            // lc.WriteTo.File("../log_test_task.txt", rollingInterval: RollingInterval.Day);
-            // check error// lc.Enrich.WithResource(
-            //     ("server", Environment.MachineName),
-            //     ("app", AppDomain.CurrentDomain.FriendlyName)
-            // );
         });
 
         // Конфигурация Kestrel
@@ -50,7 +45,7 @@ public static class Startup
         );
 
         builder.Services.AddTransient<IProductRepository, ProductRepository>();
-        
+
         // https://learn.microsoft.com/ru-ru/aspnet/core/grpc/configuration?view=aspnetcore-8.0
         builder.Services.AddGrpc(options =>
         {
@@ -97,10 +92,7 @@ public static class Startup
 
         app.MapGrpcService<GrpcProductService>();
 
-        if (app.Environment.IsDevelopment())
-        {
-            app.MapGrpcReflectionService();
-        }
+        if (app.Environment.IsDevelopment()) app.MapGrpcReflectionService();
         return app;
     }
 }
