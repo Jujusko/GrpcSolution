@@ -3,6 +3,7 @@ using Client.Extensions.SerilogEnricher;
 using Client.ServiceInterfaces;
 using Client.Services;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.OpenApi.Models;
 using Serilog;
 
 namespace Client;
@@ -46,11 +47,11 @@ public static class Startup
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(c =>
         {
-            //c.SwaggerDoc("v1", new OpenApiInfo { Title = "TestTask", Version = "v1" });
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "TestTask", Version = "v1" });
         });
         return builder;
     }
-
+    
     internal static WebApplication ConfigApp(WebApplication app)
     {
         if (app.Environment.IsDevelopment())
