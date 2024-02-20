@@ -17,32 +17,30 @@ public class ProductProfile : Profile
             .ForMember(dst => dst.Cost, opt =>
                 opt.MapFrom(src => src.Cost.FromProtoDecimal()))
             ;
-        
+
         CreateMap<ProductModel, GetProductByIdResponse>()
-            .ForMember(dst => dst.Cost, 
-                opt => 
+            .ForMember(dst => dst.Cost,
+                opt =>
                     opt.MapFrom(src => src.Cost.FromDecimal()))
-            .ForMember(dst => dst.ProductName, opt => 
+            .ForMember(dst => dst.ProductName, opt =>
                 opt.MapFrom(src => src.Name))
             ;
-        
+
         CreateMap<GetProductByIdResponse, ProductModel>()
-            .ForMember(dst => dst.Id, opt => 
+            .ForMember(dst => dst.Id, opt =>
                 opt.Ignore())
-            .ForMember(dst => dst.Cost, opt => 
+            .ForMember(dst => dst.Cost, opt =>
                 opt.MapFrom(src => src.Cost.FromProtoDecimal()))
-            .ForMember(dst => dst.Name, opt => 
+            .ForMember(dst => dst.Name, opt =>
                 opt.MapFrom(src => src.ProductName));
-        
-        
+
+
         CreateMap<ProductModel, AddProductRequest>()
-            .ForMember(dst => dst.Name, 
-                opt => 
+            .ForMember(dst => dst.Name,
+                opt =>
                     opt.MapFrom(src => src.Name))
             .ForMember(dst => dst.Cost,
-            opt => 
-                opt.MapFrom(src => src.Cost.FromDecimal()));
-        
-        
+                opt =>
+                    opt.MapFrom(src => src.Cost.FromDecimal()));
     }
 }

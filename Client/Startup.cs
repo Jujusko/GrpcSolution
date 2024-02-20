@@ -51,7 +51,7 @@ public static class Startup
         });
         return builder;
     }
-    
+
     internal static WebApplication ConfigApp(WebApplication app)
     {
         if (app.Environment.IsDevelopment())

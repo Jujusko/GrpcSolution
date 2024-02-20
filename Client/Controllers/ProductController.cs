@@ -3,7 +3,6 @@ using Client.Extensions;
 using Client.Mappers;
 using Client.Models;
 using Client.ServiceInterfaces;
-using Grpc.Core;
 using GrpcSolution.Product.V1;
 using Microsoft.AspNetCore.Mvc;
 
@@ -75,10 +74,10 @@ public class ProductController : Controller
     public async Task<ActionResult<ProductModel>> GetProduct(long id)
     {
         var result = new ProductModel();
-        
+
         try
         {
-            var query = await _server.GrpcClient.GetProductByIdAsync(new GetProductByIdRequest()
+            var query = await _server.GrpcClient.GetProductByIdAsync(new GetProductByIdRequest
             {
                 Id = id
             }, cancellationToken: HttpContext.RequestAborted);
@@ -88,10 +87,11 @@ public class ProductController : Controller
         }
         catch (Exception e)
         {
-            _logger.LogError("При обработке запроса возникла ошибка | Exception {Exception} | InnerException {InnerException}",
+            _logger.LogError(
+                "При обработке запроса возникла ошибка | Exception {Exception} | InnerException {InnerException}",
                 e.Message, e.InnerException?.Message);
         }
-        
+
         return Json(result);
     }
 
@@ -103,7 +103,7 @@ public class ProductController : Controller
         long result = 0;
         try
         {
-            var query = await _server.GrpcClient.AddProductAsync(new AddProductRequest()
+            var query = await _server.GrpcClient.AddProductAsync(new AddProductRequest
             {
                 Name = product.Name,
                 Cost = product.Cost.FromDecimal()
@@ -113,7 +113,8 @@ public class ProductController : Controller
         }
         catch (Exception e)
         {
-            _logger.LogError("При обработке запроса возникла ошибка | Exception {Exception} | InnerException {InnerException}",
+            _logger.LogError(
+                "При обработке запроса возникла ошибка | Exception {Exception} | InnerException {InnerException}",
                 e.Message, e.InnerException?.Message);
             return Json(e.Message);
         }
